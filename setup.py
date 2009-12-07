@@ -7,7 +7,7 @@ readme = open('README.txt').read()
 
 setup(name='django-staticblocks',
       version=version,
-      description="use django flatpages as static page block snippets",
+      description="staticblocks provides you with tools for content managers to easily include flatpage content as a snippet in your templates while retaining structured control over the templates themselves",
       long_description=readme,
       classifiers=['Framework :: Django'],
       keywords='django template static',
