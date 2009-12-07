@@ -1,0 +1,52 @@
+{% load static_block smartif %}
+{% get_static_block for blockname as block_object %}
+
+{% with block_object.content as staticblock %}
+
+  {% if staticblock %}
+    {% with staticblock.title as title %}
+      {% include 'staticblock/widgets/title.html' %}
+    {% endwith %}
+
+    {% if request.user|has_perm:"flatpage.add" and request.user|has_perm:"staticblock.change" %}
+      <small>
+	(You can
+	<a href="/admin/flatpages/flatpage/{{staticblock.pk}}">
+	  edit this content</a>
+	or
+	<a href="/admin/staticblocks/staticblock/{{block_object.pk}}">
+	  pull in different content</a>)
+      </small>
+    {% else %}{% if request.user|has_perm:"flatpage.add" %}
+      <small>
+	(You can
+	<a href="/admin/flatpages/flatpage/{{staticblock.pk}}">
+	  edit this content</a>)
+	</small>
+      {% else %}{% if request.user|has_perm:"staticblock.change" %}
+      <small>
+	(You can
+	<a href="/admin/staticblocks/staticblock/{{block_object.pk}}">
+	  pull in different content</a>)
+      </small>
+        {% endif %}
+      {% endif %}
+    {% endif %}
+
+    <div class="staticblock">
+      {{staticblock.content|safe}}
+    </div>
+    
+  {% else %}
+
+    {% if request.user|has_perm:"staticblock.add" %}
+      {% with "No content yet in this page block" as title %}
+        {% include 'staticblock/widgets/title.html' %}
+      {% endwith %}
+
+      <a href="/admin/staticblocks/staticblock/add/?name={{blockname}}">Add it!</a>
+    {% endif %}
+
+  {% endif %}
+
+{% endwith %}
